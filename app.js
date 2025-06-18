@@ -1,14 +1,36 @@
-import "dotenv/config";
 import playwright from "playwright";
+import readline from "readline";
 
-async function main() {
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: true,
+});
+
+function main() {
+  rl.question(" :: Masukkan NPM -> ", (npm) => {
+    rl.question(" :: Masukkan Password -> ", (password) => {
+      startAction(npm, password)
+        .then(() => {
+          console.log("Selesai!");
+          rl.close();
+        })
+        .catch((err) => {
+          console.error("Terjadi kesalahan:", err);
+          rl.close();
+        });
+    });
+  });
+}
+
+async function startAction(npm, password) {
   const browser = await playwright.chromium.launch({ headless: false });
   const page = await browser.newPage();
 
   // Login Page
   await page.goto("https://sia.uty.ac.id/");
-  await page.fill("input#loginNipNim", process.env.NPM);
-  await page.fill("input#loginPsw", process.env.PASSWORD);
+  await page.fill("input#loginNipNim", npm);
+  await page.fill("input#loginPsw", password);
 
   const captcha = await page.locator("form .form-group p").innerText();
   const numbers = captcha
@@ -20,8 +42,6 @@ async function main() {
   for (let i of numbers) {
     result += Number(i);
   }
-
-  console.log(captcha, numbers, result);
 
   await page.getByPlaceholder("Jawaban anda").fill(result.toString());
   await page.click("button#BtnLogin");
@@ -38,7 +58,7 @@ async function main() {
       await answers[0].check();
     }
     await page.click(".panel-footer button");
-    console.log("Done");
+    console.log("[Done] " + await quest.innerText());
   }
 
   // Kuesioner Layanan
@@ -56,6 +76,9 @@ async function main() {
     await page.click(".panel-footer button");
     console.log("Done");
   }
+
+  await browser.close();
+  console.log("Semua kuesioner telah selesai diisi.");
 }
 
 main();
