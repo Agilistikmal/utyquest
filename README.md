@@ -19,12 +19,16 @@ Saat ini secara default hanya memberikan rating terbaik (sangat baik) untuk seti
    ```
    git clone https://github.com/Agilistikmal/utyquest
    ```
-2. Ubah konfigurasi `.env`
+2. Install Dependency
+   ```
+   npm install
+   ```
+3. Ubah konfigurasi `.env`
    ```env
    NPM="5220411040"
    PASSWORD="PASSWORD SIA ANDA"
    ```
-3. Jalankan aplikasi
+4. Jalankan aplikasi
    ```
    node app.js
    ```
