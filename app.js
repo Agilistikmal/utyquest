@@ -26,11 +26,27 @@ async function main() {
   await page.getByPlaceholder("Jawaban anda").fill(result.toString());
   await page.click("button#BtnLogin");
 
-  // Home Page (STD)
+  // Kuesioner PBM
   await page.goto("https://sia.uty.ac.id/std/kuesioner");
   const quests = await page.locator(".list-group-item[href]").all();
   for (let quest of quests) {
     const quest_url = await quest.getAttribute("href");
+    await page.goto(quest_url);
+    const questions = await page.locator(".btn-group").all();
+    for (let question of questions) {
+      const answers = await question.locator("input").all();
+      await answers[0].check();
+    }
+    await page.click(".panel-footer button");
+    console.log("Done");
+  }
+
+  // Kuesioner Layanan
+  await page.goto("https://sia.uty.ac.id/std/kuesionerlayanan")
+  const serviceQuests = await page.locator(".list-group-item[href]").all();
+  console.log(`Terdapat ${serviceQuests.length} kuesioner layanan yang tersedia.`);
+  for (let serviceQuest of serviceQuests) {
+    const quest_url = await serviceQuest.getAttribute("href");
     await page.goto(quest_url);
     const questions = await page.locator(".btn-group").all();
     for (let question of questions) {
