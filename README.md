@@ -23,12 +23,8 @@ Saat ini secara default hanya memberikan rating terbaik (sangat baik) untuk seti
    ```
    npm install
    ```
-3. Ubah konfigurasi `.env`
-   ```env
-   NPM="5220411040"
-   PASSWORD="PASSWORD SIA ANDA"
-   ```
-4. Jalankan aplikasi
+3. Jalankan aplikasi
    ```
    node app.js
    ```
+   Masukkan NPM dan Password, tunggu hingga selesai
